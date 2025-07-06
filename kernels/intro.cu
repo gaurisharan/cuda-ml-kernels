@@ -23,20 +23,35 @@ void matMul(float* A, float* B, float* C, int N) {
 
     dim3 threadsPerBlock(16, 16);
     dim3 blocks((N + 15)/16, (N + 15)/16);
+
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
     matMulKernel<<<blocks, threadsPerBlock>>>(d_A, d_B, d_C, N);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
 
     cudaMemcpy(C, d_C, size, cudaMemcpyDeviceToHost);
     cudaFree(d_A); cudaFree(d_B); cudaFree(d_C);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
+
+    std::cout << "intro kernel execution time: " << milliseconds << " ms" << std::endl;
 }
 
 int main() {
     const int N = 4;
     float A[N*N], B[N*N], C[N*N];
 
-    // Initialize A and B with simple values
     for (int i = 0; i < N*N; i++) {
-        A[i] = i + 1;  // 1,2,3,4,...
-        B[i] = (i + 1) * 2;  // 2,4,6,8,...
+        A[i] = i + 1;
+        B[i] = (i + 1) * 2;
     }
 
     matMul(A, B, C, N);
@@ -55,6 +70,7 @@ int main() {
 // Finally, it prints the result matrix to the console.
 
 // Output obtained-
+// intro kernel execution time: 1.26976 ms
 // Result matrix:
 // 180 200 220 240 
 // 404 456 508 560

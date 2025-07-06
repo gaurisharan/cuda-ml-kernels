@@ -23,7 +23,18 @@ int main() {
     int threadsPerBlock = 256;
     int blocks = (N + threadsPerBlock - 1) / threadsPerBlock;
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
     vectorAddKernel<<<blocks, threadsPerBlock>>>(d_A, d_B, d_C, N);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
 
     cudaMemcpy(C, d_C, size, cudaMemcpyDeviceToHost);
 
@@ -31,7 +42,11 @@ int main() {
         std::cout << C[i] << " ";
     std::cout << std::endl;
 
+    std::cout << "vector_add kernel execution time: " << milliseconds << " ms" << std::endl;
+
     cudaFree(d_A); cudaFree(d_B); cudaFree(d_C);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
     return 0;
 }
 // This code performs vector addition on the GPU using CUDA.
@@ -40,3 +55,4 @@ int main() {
 
 //Output obtained-
 // 0 3 6 9 12 15 18 21 24 27 
+// vector_add kernel execution time: 1.01581 ms

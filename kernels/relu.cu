@@ -19,7 +19,18 @@ int main() {
     int threadsPerBlock = 256;
     int blocks = (N + threadsPerBlock - 1) / threadsPerBlock;
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
     reluKernel<<<blocks, threadsPerBlock>>>(d_A, N);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
 
     cudaMemcpy(A, d_A, size, cudaMemcpyDeviceToHost);
 
@@ -27,7 +38,11 @@ int main() {
         std::cout << A[i] << " ";
     std::cout << std::endl;
 
+    std::cout << "relu kernel execution time: " << milliseconds << " ms" << std::endl;
+
     cudaFree(d_A);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
     return 0;
 }
 // This code performs ReLU activation on a vector A using CUDA.
@@ -36,4 +51,5 @@ int main() {
 // Finally, it prints the result and frees the allocated GPU memory.        
 
 //Output obtained:
-// 0 0 0 0.5 1 0 3 0 5 0
+// 0 0 0 0.5 1 0 3 0 5 0 
+// relu kernel execution time: 0.820224 ms

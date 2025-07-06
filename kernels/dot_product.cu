@@ -42,13 +42,27 @@ int main() {
     int threadsPerBlock = 256;
     int blocks = (N + threadsPerBlock - 1) / threadsPerBlock;
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
     dotProductKernel<<<blocks, threadsPerBlock>>>(d_A, d_B, d_result, N);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
 
     cudaMemcpy(&h_result, d_result, sizeof(float), cudaMemcpyDeviceToHost);
 
     std::cout << "Dot Product: " << h_result << std::endl;
+    std::cout << "dot_product kernel execution time: " << milliseconds << " ms" << std::endl;
 
     cudaFree(d_A); cudaFree(d_B); cudaFree(d_result);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
     return 0;
 }
 // This code performs dot product of two vectors on the GPU using CUDA.
