@@ -14,10 +14,10 @@ This repository implements **custom CUDA kernels for common ML operations**, ben
 
 ```.
 ├── kernels/
-│   ├── matrix\_multiply.cu
-│   ├── vector\_add.cu
+│   ├── matrix_multiply.cu
+│   ├── vector_add.cu
 │   ├── relu.cu
-│   ├── dot\_product.cu
+│   ├── dot_product.cu
 │   ├── intro.cu
 ├── benchmarks/
 │   └── benchmark.py
