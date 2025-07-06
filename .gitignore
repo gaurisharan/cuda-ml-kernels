@@ -1,0 +1,9 @@
+# Ignore compiled binaries and intermediate files
+*.exe
+*.obj
+*.ilk
+*.pdb
+*.exp
+*.lib
+*.out
+*.o
