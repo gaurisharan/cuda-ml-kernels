@@ -34,3 +34,6 @@ int main() {
 // It initializes a vector with some negative and positive values, allocates memory on the GPU,
 // copies the vector to the GPU, launches a kernel to apply the ReLU function, and then copies the result back to the host.
 // Finally, it prints the result and frees the allocated GPU memory.        
+
+//Output obtained:
+// 0 0 0 0.5 1 0 3 0 5 0

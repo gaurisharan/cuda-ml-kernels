@@ -37,3 +37,6 @@ int main() {
 // This code performs vector addition on the GPU using CUDA.
 // It initializes two vectors A and B, allocates memory on the GPU, copies the vectors to the GPU, launches a kernel to perform the addition, and then copies the result back to the host.
 // Finally, it prints the result and frees the allocated GPU memory.
+
+//Output obtained-
+// 0 3 6 9 12 15 18 21 24 27 

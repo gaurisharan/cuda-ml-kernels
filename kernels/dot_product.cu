@@ -54,3 +54,6 @@ int main() {
 // This code performs dot product of two vectors on the GPU using CUDA.
 // It initializes two vectors A and B, allocates memory on the GPU, copies the vectors to the GPU, launches a kernel to perform the dot product, and then copies the result back to the host.
 // Finally, it prints the result and frees the allocated GPU memory.
+
+//Output obtained-
+// Dot Product: 2048
