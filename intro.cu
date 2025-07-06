@@ -53,3 +53,10 @@ int main() {
 // This code performs matrix multiplication on the GPU using CUDA.
 // It initializes two matrices A and B, performs the multiplication in a kernel, and then copies the result back to the host.
 // Finally, it prints the result matrix to the console.
+
+// Output obtained-
+// Result matrix:
+// 180 200 220 240 
+// 404 456 508 560
+// 628 712 796 880
+// 852 968 1084 1200
