@@ -50,3 +50,6 @@ int main() {
 
     return 0;
 }
+// This code performs matrix multiplication on the GPU using CUDA.
+// It initializes two matrices A and B, performs the multiplication in a kernel, and then copies the result back to the host.
+// Finally, it prints the result matrix to the console.
